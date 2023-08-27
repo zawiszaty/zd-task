@@ -1,0 +1,32 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+      - features/**
+      - dependabot/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  docker:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: cp env
+        run: cp .env.example .env
+
+      - name: Start containers
+        run: docker-compose up -d --build
+
+      - name: migrate
+        run: docker-compose exec laravel.test php artisan migrate --seed
+
+      - name: test
+        run: docker-compose exec laravel.test php artisan test
