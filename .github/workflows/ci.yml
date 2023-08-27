@@ -25,6 +25,9 @@ jobs:
       - name: Start containers
         run: docker-compose up -d --build
 
+      - name: composer install
+        run: docker-compose exec -T laravel.test composer install
+
       - name: migrate
         run: docker-compose exec -T laravel.test php artisan migrate --seed
 
