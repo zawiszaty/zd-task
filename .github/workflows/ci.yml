@@ -29,7 +29,7 @@ jobs:
         run: docker-compose exec -T laravel.test composer install
 
       - name: migrate
-        run: docker-compose exec -T laravel.test php artisan migrate --seed
+        run: docker-compose exec -T laravel.test sh  wait-for-mysql-then-run.sh
 
       - name: test
         run: docker-compose exec -T laravel.test php artisan test
